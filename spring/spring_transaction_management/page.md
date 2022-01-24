@@ -18,7 +18,7 @@ Last updated: 2022-01-24
     - [Ntile](#ntile)
     - [Lead and Lag](#lead-and-lag)
 
-
+---
 
 ### Introducing the Dataset
 
@@ -26,7 +26,7 @@ Before going further, let me introduce you to the dummy dataset we will be worki
 a company that maintains the employee’s name, job, and salary records as follows:
 
 <p align="center">
-  <img src="./wfassets/sql-employee-dataset.png" alt="sql-employee-dataset"/>
+  <img src="./assets/sql-employee-dataset.png" alt="sql-employee-dataset"/>
 </p>
 
 
@@ -39,14 +39,14 @@ simply use the SUM() aggregate function on the SALARY column.
 
 
 <p align="center">
-    <img src="./wfassets/sql-sum.png" alt="sql-sum"/>
+    <img src="./assets/sql-sum.png" alt="sql-sum"/>
 </p>
 
 How about determining the total salary of employees per job category? Use the last query and append a GROUP BY clause on 
 the JOB column.
 
 <p align="center">
-    <img src="./wfassets/sql-group-by.png" alt="sql-group-by"/>
+    <img src="./assets/sql-group-by.png" alt="sql-group-by"/>
 </p>
 
 
@@ -81,7 +81,7 @@ For example, if I were to display the total salary of employees along with every
 like this:
 
 <p align="center">
-    <img src="./wfassets/over-clause-sql.png" alt="over-clause-sql"/>
+    <img src="./assets/over-clause-sql.png" alt="over-clause-sql"/>
 </p>
 
 The OVER clause signifies a window of rows over which a window function is applied. It can be used with aggregate 
@@ -106,7 +106,7 @@ For example, to display the total salary per job category for all the rows we wo
 query as follows:
 
 <p align="center">
-    <img src="./wfassets/partition-by-sql.png" alt="partition-by-sql"/>
+    <img src="./assets/partition-by-sql.png" alt="partition-by-sql"/>
 </p>
 
 As you can see, the total_job_salary column depicts the sum of sales for that specific job category and not for the entire table.
@@ -126,7 +126,7 @@ We know that to arrange rows in a table, we can use the ORDER BY clause. So, to 
 have to modify the OVER clause with the ORDER BY clause.
 
 <p align="center">
-    <img src="./wfassets/ordered-window-function-sql.png" alt="ordered-window-function-sql"/>
+    <img src="./assets/ordered-window-function-sql.png" alt="ordered-window-function-sql"/>
 </p>
 
 Here, the rows have been partitioned as per their job category as indicated by the JOB column. As you scroll down, you 
@@ -151,7 +151,7 @@ dataset. In that case, we can make use of the ROW_NUMBER() window function. It a
 each row of the table.
 
 <p align="center">
-    <img src="./wfassets/row_number-sql.png" alt="row_number-sql"/>
+    <img src="./assets/row_number-sql.png" alt="row_number-sql"/>
 </p>
 
 
@@ -161,7 +161,7 @@ the column name within quotes.
 But, since it is a window function, we can also limit it to partitions and then order those partitions.
 
 <p align="center">
-    <img src="./wfassets/row-number-order-by-clause-sql.png" alt="row-number-order-by-clause-sql"/>
+    <img src="./assets/row-number-order-by-clause-sql.png" alt="row-number-order-by-clause-sql"/>
 </p>
 
 Here, we have partitioned the rows on the JOB column and ordered them based on the SALARY of the employee. Notice how 
@@ -174,7 +174,7 @@ But suppose we want to rank the employees based on their salaries?
 The RANK() window function, as the name suggests, ranks the rows within their partition based on the given condition.
 
 <p align="center">
-    <img src="./wfassets/rank-function-sql-1.png" alt="rank-function-sql-1"/>
+    <img src="./assets/rank-function-sql-1.png" alt="rank-function-sql-1"/>
 </p>
 
 Notice the highlighted portion. In the case of ROW_NUMBER(), we have a sequential number. On the other hand, in the 
@@ -187,7 +187,7 @@ Therefore we have a different function to resolve this issue.
 The DENSE_RANK() function is similar to the RANK() except for one difference, it doesn’t skip any ranks when ranking rows.
 
 <p align="center">
-    <img src="./wfassets/dense-rank-sql-1.png" alt="dense-rank-sql-1"/>
+    <img src="./assets/dense-rank-sql-1.png" alt="dense-rank-sql-1"/>
 </p>
 
 Here, all the ranks are distinct and sequentially increasing within each partition. As compared to the RANK() function, 
@@ -203,7 +203,7 @@ column, then order the rows within the partitions according to decreasing salary
 function to retrieve the value. The command will be as follows:
 
 <p align="center">
-    <img src="./wfassets/nth-value-sql.png" alt="nth-value-sql"/>
+    <img src="./assets/nth-value-sql.png" alt="nth-value-sql"/>
 </p>
 
 You must have noticed something different after the Order By clause. That is the Frame clause. It determines the subset 
@@ -218,14 +218,14 @@ Now suppose you wanted to output the first value from each partition? Although t
 as well, I am going to use the NTH_VALUE for the same.
 
 <p align="center">
-    <img src="./wfassets/first-value-sql.png" alt="first-value-sql"/>
+    <img src="./assets/first-value-sql.png" alt="first-value-sql"/>
 </p>
 
 Similarly, just we also have a LAST_VALUE() function. But I am going to determine the last value within each partition 
 just as above, albeit using the decreasing order of rows.
 
 <p align="center">
-    <img src="./wfassets/last-value-sql.png" alt="last-value-sql"/>
+    <img src="./assets/last-value-sql.png" alt="last-value-sql"/>
 </p>
 
 ### Ntile
@@ -237,7 +237,7 @@ purposes. It returns the group number for each of the rows in the partition.
 For example, let’s find the quartile for each row based on the SALARY of the employee:
 
 <p align="center">
-    <img src="./wfassets/ntile-function-sql.png" alt="ntile-function-sql"/>
+    <img src="./assets/ntile-function-sql.png" alt="ntile-function-sql"/>
 </p>
 
 Similarly, you can divide the rows into different numbers of groups and calculate the NTILE for different partitions.
@@ -248,7 +248,7 @@ Often, you might want to compare the value of the current row to that of the pre
 the easy analysis of the data. The LEAD() and LAG() window functions are there just for this purpose.
 
 <p align="center">
-    <img src="./wfassets/lead-function-sql.png" alt="lead-function-sql"/>
+    <img src="./assets/lead-function-sql.png" alt="lead-function-sql"/>
 </p>
 
 Here, we created a new column containing SALARY from the next row within each partition ordered by salary using the 
@@ -258,7 +258,7 @@ for it to pull data from.
 Now, let’s do the same with the LAG function.
 
 <p align="center">
-    <img src="./wfassets/lag-function-sql.png" alt="lag-function-sql"/>
+    <img src="./assets/lag-function-sql.png" alt="lag-function-sql"/>
 </p>
 
 Here, we created two new columns. The first column contains SALARY from the previous row within each partition ordered 
