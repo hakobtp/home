@@ -1,3 +1,3 @@
 # Java Tutorials
 
-[home](./../README.md)
+[Home](./../README.md)
