@@ -18,6 +18,8 @@ Last updated: 2022-01-24
     - [Ntile](#ntile)
     - [Lead and Lag](#lead-and-lag)
 
+
+
 ### Introducing the Dataset
 
 Before going further, let me introduce you to the dummy dataset we will be working on in this article. Assume there is 
@@ -52,6 +54,7 @@ Now let me pose two more questions for you:
 
 
 1)  Display the total salary and the total salary per job category along with every row value.
+
 2)  Arrange the salary in a decreasing order within each job category..
 
 
