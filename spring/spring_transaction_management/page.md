@@ -119,6 +119,27 @@ window_function_name(<expression>) OVER (<partition_by_clause>)
 
 Now, how about arranging the rows within each partition?
 
+```java
+public class App{
+    public void mian(String[] args){
+
+        RetryConfig config = RetryConfig.ofDefaults(); // ----> 1
+        RetryRegistry registry = RetryRegistry.of(config); // ----> 2
+        Retry retry = registry.retry("flightSearchService", config); // ----> 3
+
+        FlightSearchService searchService = new FlightSearchService();
+        SearchRequest request = new SearchRequest("NYC", "LAX", "07/21/2020");
+        Supplier<List<Flight>> flightSearchSupplier = 
+        () -> searchService.searchFlights(request); // ----> 4
+
+        Supplier<List<Flight>> retryingFlightSearch = 
+        Retry.decorateSupplier(retry, flightSearchSupplier); // ----> 5
+
+        System.out.println(retryingFlightSearch.get()); // ----> 6
+    }
+}
+```
+
 
 ### Arranging Rows within Partitions
 
