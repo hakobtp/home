@@ -1,10 +1,3 @@
-<!-- # Spring Transaction Management -->
-
-```info
-Author : Ter-Petrosyan Hakob
-Last updated: 2022-01-24
-```
-
 ## Introducing Window Functions
 
 ```info
