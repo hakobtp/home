@@ -1,5 +1,5 @@
-|1                          |2                          |3                                          |
-|:-------------------------:|:-------------------------:|:-----------------------------------------:|
-| [Java](./java/tutorias.md)| [Spring](./spring/tutorias.md)| [PostgreSQL](./postgresql/tutorias.md)|
+|1                           |2                               |3                                       |
+|:--------------------------:|:------------------------------:|:--------------------------------------:|
+| [Java](./java/tutorials.md)| [Spring](./spring/tutorials.md)| [PostgreSQL](./postgresql/tutorials.md)|
 
  
