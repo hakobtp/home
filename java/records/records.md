@@ -146,7 +146,7 @@ e1 hash code = -1706248431
 e2 hash code = -1706248431
 e3 hash code = 685814257
 ```
-> $NOTE$
+> **NOTE**
 > The Record provides access method without 'get' prefix  `e1.firstName()`
 
 [Home](./../../README.md) 
