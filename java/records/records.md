@@ -146,8 +146,8 @@ e1 hash code = -1706248431
 e2 hash code = -1706248431
 e3 hash code = 685814257
 ```
-
-> The Record provides access method without 'get' prefix  ```e1.firstName()```
+> $NOTE$
+> The Record provides access method without 'get' prefix  `e1.firstName()`
 
 [Home](./../../README.md) 
 | [<< Java Tutorials](./../tutorials.md)
