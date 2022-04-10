@@ -101,6 +101,54 @@ public record Employee(String firstName, String lastName, String email, double s
 }
 ```
 
+Record provides
+ 
+- private, final field for each piece of data
+- access method  for each field
+- public constructor with a corresponding argument for each field
+- equals method that returns true for objects of the same record when all fields match
+- hashCode method that returns the same value when all fields match
+- toString method that includes the name of the record and the name of each field and its corresponding value
+
+```java
+package com.htp.blog;
+
+public class App {
+    public static void main(String[] args) {
+
+        var e1 = new Employee("Gamer", "Simson", "gamer@mail.com", 1400);
+        var e2 = new Employee("Gamer", "Simson", "gamer@mail.com", 1400);
+        var e3 = new Employee("Bart", "Simson", "bart@mail.com", 0);
+
+
+        System.out.println(e1);
+        System.out.println(e2);
+        System.out.println(e3);
+
+        System.out.println("e1 equals e2 = " + e1.equals(e2));
+        System.out.println("e1 equals e3 = " + e1.equals(e3));
+
+        System.out.println("e1 hash code = " + e1.hashCode());
+        System.out.println("e2 hash code = " + e2.hashCode());
+        System.out.println("e3 hash code = " + e3.hashCode());
+
+    }
+}
+```
+
+```log
+Employee[firstName=Gamer, lastName=Simson, email=gamer@mail.com, salary=1400.0]
+Employee[firstName=Gamer, lastName=Simson, email=gamer@mail.com, salary=1400.0]
+Employee[firstName=Bart, lastName=Simson, email=bart@mail.com, salary=0.0]
+e1 equals e2 = true
+e1 equals e3 = false
+e1 hash code = -1706248431
+e2 hash code = -1706248431
+e3 hash code = 685814257
+```
+
+> The Record provides access method without 'get' prefix  ```e1.firstName()```
+
 [Home](./../../README.md) 
 | [<< Java Tutorials](./../tutorials.md)
 
