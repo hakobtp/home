@@ -84,9 +84,22 @@ public class Employee {
 }
 ```
 
+Although modern IDEA helps us generate boilerplate code our class doesn't look pretty. Starting with Java 17 we can use 
+Record.
 ## Record example
 
+Java records were introduced with the intention to be used as a fast way to create data carrier classes, i.e. the 
+classes whose objective is to simply contain data and carry it between modules, also known as POJOs 
+(Plain Old Java Objects) and DTOs (Data Transfer Objects)
 
+Let's rewrite our class via Record
+
+```java
+package com.htp.blog;
+
+public record Employee(String firstName, String lastName, String email, double salary) {
+}
+```
 
 [Home](./../../README.md) 
 | [<< Java Tutorials](./../tutorials.md)
