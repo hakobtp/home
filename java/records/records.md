@@ -101,14 +101,14 @@ public record Employee(String firstName, String lastName, String email, double s
 }
 ```
 
-Record provides
- 
-- private, final field for each piece of data
-- access method  for each field
-- public constructor with a corresponding argument for each field
-- equals method that returns true for objects of the same record when all fields match
-- hashCode method that returns the same value when all fields match
-- toString method that includes the name of the record and the name of each field and its corresponding value
+Records automatically generate
+
+- Immutable fields
+- A canonical constructor
+- An accessor method for each element
+- The equals() method
+- The hashCode() method
+- The toString() method
 
 ```java
 package com.htp.blog;
@@ -148,6 +148,86 @@ e3 hash code = 685814257
 ```
 > **NOTE**
 > The Record provides access method without 'get' prefix  `e1.firstName()`
+
+You cannot add fields to a record except by defining them in the header. However, static methods, fields, and initializers are allowed.
+
+A record can define methods, but the methods can only read fields, which are automatically final:
+
+```java
+package com.htp.blog;
+
+public record Employee(String firstName, String lastName, String email, double salary) {
+
+    public void setFirstName(String firstName){
+        // error: cannot assign a value to final variable firstName this.firstName = firstName;
+        this.firstName = firstName; 
+    }
+
+    public void tryToChangeFirstName() {
+        //error: cannot assign a value to final variable firstName this.firstName = firstName.toLowerCase();
+        this.firstName = firstName.toLowerCase(); 
+    }
+}
+```
+
+You cannot inherit from a record because it is implicitly final (and cannot be abstract). In addition, a record cannot 
+be inherited from another class. However, a record can implement an interface.
+
+```java
+package com.htp.blog;
+
+interface IEmployee {
+
+    String firstName();
+
+    String fullName();
+}
+
+public record Employee(String firstName, String lastName, String email, double salary) implements IEmployee{
+
+    @Override
+    public String fullName() {
+        return firstName + " " + lastName;
+    }
+}
+```
+
+The compiler forces you to provide a definition for fullName(), but it doesn’t complain about firstName(). 
+That’s because the record automatically generates an accessor for its brightness argument, and that accessor fulfills the contract 
+for firstName() in interface IEmployee.
+
+A record can be nested within a class or defined locally within a method. Both nested and local uses of record are implicitly static.
+
+You can add constructor behavior using a compact constructor, which looks like a constructor but has no parameter list.
+The compact constructor is typically used to validate the arguments.
+
+```java
+package com.htp.blog;
+
+import java.math.BigDecimal;
+import java.util.Objects;
+
+public record Employee(String firstName, String lastName, String email, BigDecimal salary) {
+
+    public Employee {
+        Objects.requireNonNull(firstName);
+        Objects.requireNonNull(lastName);
+        Objects.requireNonNull(email);
+        Objects.requireNonNull(salary);
+    }
+}
+```
+
+It’s also possible to use the compact constructor to modify the initialization values for the fields.
+
+```java
+public record Employee(String firstName, String lastName, String email, BigDecimal salary) {
+
+    public Employee {
+        email = email.toLowerCase();
+    }
+}
+```
 
 [Home](./../../README.md) 
 | [<< Java Tutorials](./../tutorials.md)
