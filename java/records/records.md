@@ -22,11 +22,7 @@ Let's write an immutable class, for that we should  maintain the next rules
 - toString method that includes the name of the class and the name of each field and its corresponding value
 
 ```java
-package com.htp.blog;
-
-import java.util.Objects;
-
-public class Employee {
+public final class Employee {
 
     private final String firstName;
     private final String lastName;
@@ -95,8 +91,6 @@ classes whose objective is to simply contain data and carry it between modules, 
 Let's rewrite our class via Record
 
 ```java
-package com.htp.blog;
-
 public record Employee(String firstName, String lastName, String email, double salary) {
 }
 ```
@@ -111,8 +105,6 @@ Records automatically generate
 - The toString() method
 
 ```java
-package com.htp.blog;
-
 public class App {
     public static void main(String[] args) {
 
@@ -154,8 +146,6 @@ You cannot add fields to a record except by defining them in the header. However
 A record can define methods, but the methods can only read fields, which are automatically final:
 
 ```java
-package com.htp.blog;
-
 public record Employee(String firstName, String lastName, String email, double salary) {
 
     public void setFirstName(String firstName){
@@ -174,8 +164,6 @@ You cannot inherit from a record because it is implicitly final (and cannot be a
 be inherited from another class. However, a record can implement an interface.
 
 ```java
-package com.htp.blog;
-
 interface IEmployee {
 
     String firstName();
@@ -198,16 +186,39 @@ public record Employee(String firstName, String lastName, String email, double s
 > for firstName() in interface IEmployee.
 
 A record can be nested within a class or defined locally within a method. Both nested and local uses of record are implicitly static.
+You can declare static fields, static initializers, and static methods in a record class, and they behave as they would in a normal class.
+You cannot declare instance variables (non-static fields) or instance initializers in a record class.
+
+```java
+public record User(UUID uuid) {
+
+    // Field declarations must be static:
+    // Instance initializers are not allowed in records:
+    List<String> roles = new ArrayList<>();
+}
+```
+
+You can explicitly declare any of the members derived from the header, such as the public accessor methods that correspond 
+to the record class's components, for example:
+
+```java
+public record Employee(String firstName, String lastName, String email, BigDecimal salary) {
+
+        public String firstName(){
+            return firstName;
+        }
+}
+```
+
+If you implement your own accessor methods, then ensure that they have the same characteristics as implicitly 
+derived accessors (for example, they're declared public and have the same return type as the corresponding record class component). 
+Similarly, if you implement your own versions of the equals, hashCode, and toString methods, then ensure that they have the 
+same characteristics and behavior as those in the java.lang.Record class, which is the common superclass of all record classes.
 
 You can add constructor behavior using a compact constructor, which looks like a constructor but has no parameter list.
 The compact constructor is typically used to validate the arguments.
 
 ```java
-package com.htp.blog;
-
-import java.math.BigDecimal;
-import java.util.Objects;
-
 public record Employee(String firstName, String lastName, String email, BigDecimal salary) {
 
     public Employee {
@@ -225,11 +236,6 @@ Record provide only a shallow immutability - just like the final fields they're 
 A compact constructor is the right place to ensure the proper immutability, by creating an immutable copy of such object:
 
 ```java
-package com.htp.blog;
-
-import java.util.List;
-import java.util.UUID;
-
 public record User(UUID uuid, List<String> roles) {
 
     public User {
