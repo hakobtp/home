@@ -192,9 +192,10 @@ public record Employee(String firstName, String lastName, String email, double s
 }
 ```
 
-The compiler forces you to provide a definition for fullName(), but it doesn’t complain about firstName(). 
-That’s because the record automatically generates an accessor for its brightness argument, and that accessor fulfills the contract 
-for firstName() in interface IEmployee.
+> **NOTE**
+> The compiler forces you to provide a definition for fullName(), but it doesn’t complain about firstName(). 
+> That’s because the record automatically generates an accessor for its brightness argument, and that accessor fulfills the contract 
+> for firstName() in interface IEmployee.
 
 A record can be nested within a class or defined locally within a method. Both nested and local uses of record are implicitly static.
 
