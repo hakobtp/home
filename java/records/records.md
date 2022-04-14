@@ -2,7 +2,7 @@
 
 ```info
 Author :        Ter-Petrosyan Hakob
-Last Updated:   2022-04-10
+Last Updated:   2022-04-14
 ````
 
 - [Immutable class](#immutable-class)
@@ -218,6 +218,10 @@ public record Employee(String firstName, String lastName, String email, BigDecim
 }
 ```
 
+> **NOTE**
+> Although this seems as if final values are being modified, they are not. Behind the scenes, the compiler is creating an intermediate 
+> placeholder for x and then performing a single assignment of the result to this.x at the end of the constructor.
+
 It’s also possible to use the compact constructor to modify the initialization values for the fields.
 
 ```java
@@ -228,6 +232,76 @@ public record Employee(String firstName, String lastName, String email, BigDecim
     }
 }
 ```
+
+You can replace the canonical constructor using normal constructor
+
+```java
+public record Employee(String firstName, String lastName, String email, BigDecimal salary) {
+
+    public Employee(String firstName, String lastName, String email, BigDecimal salary) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.salary = salary;
+    }
+}
+```
+
+Of course, the "old" syntax is still supported - records are classes too. They may also have multiple constructors, 
+but they can't avoid calling full canonical constructor (initializing all the fields). That's why the code below causes a compilation failure:
+
+```java
+public record Employee(String firstName, String lastName, String email, BigDecimal salary) {
+
+    public Employee(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+}
+```
+
+```log
+error: constructor is not canonical, so its first statement must invoke another constructor of class Employee
+    public Employee(String firstName, String lastName) {
+```
+
+
+Additionally, an explicit canonical constructor is not allowed to have a more restrictive access level than the record itself.
+
+```java
+
+// package level access
+record Employee(String firstName, String lastName, String email, BigDecimal salary) {
+
+    private Employee(String firstName, String lastName, String email, BigDecimal salary) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.salary = salary;
+    }
+}
+```
+
+```log
+error: invalid canonical constructor in record Employee
+    private Employee(String firstName, String lastName, String email, BigDecimal salary) {
+            ^
+  (attempting to assign stronger access privileges; was package)
+```
+
+To copy a record, you must explicitly pass all fields to the constructor.
+
+```java
+public class App {
+
+    public static void main(String[] args) {
+        var gamer = new Employee("Gamer", "Simson", "gamer@mail.com", BigDecimal.valueOf(23));
+        var gamerCopy = new Employee(gamer.firstName(), gamer.lastName(), gamer.email(), gamer.salary());
+    }
+}
+```
+
+
 
 [Home](./../../README.md) 
 | [<< Java Tutorials](./../tutorials.md)
