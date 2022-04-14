@@ -218,6 +218,47 @@ public record Employee(String firstName, String lastName, String email, BigDecim
 }
 ```
 
+Record provide only a shallow immutability - just like the final fields they're using. If the parameter's type is not immutable itself 
+(like List or Date), the record won't prevent modifying its value.
+
+A compact constructor is the right place to ensure the proper immutability, by creating an immutable copy of such object:
+
+```java
+package com.htp.blog;
+
+import java.util.List;
+import java.util.UUID;
+
+public record User(UUID uuid, List<String> roles) {
+
+    public User {
+        roles = List.copyOf(roles);
+    }
+}
+```
+
+
+
+The compact constructor's body is being invoked before the actual field values assignment
+
+```java
+public record Employee(String firstName, String lastName, String email, BigDecimal salary) {
+
+    public Employee {
+        System.out.println("firstName : " + firstName()
+                + "lastName : " + lastName()
+                + "email : " + email()
+                + "salary : " + salary());
+    }
+}
+```
+
+```log
+firstName : null lastName : null email : null salary : null
+```
+
+
+
 > **NOTE**
 > Although this seems as if final values are being modified, they are not. Behind the scenes, the compiler is creating an intermediate 
 > placeholder for x and then performing a single assignment of the result to this.x at the end of the constructor.
@@ -228,6 +269,7 @@ It’s also possible to use the compact constructor to modify the initialization
 public record Employee(String firstName, String lastName, String email, BigDecimal salary) {
 
     public Employee {
+        //unlike the standard constructors, we can't use this to reference instance fields
         email = email.toLowerCase();
     }
 }
