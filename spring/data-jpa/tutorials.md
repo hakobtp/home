@@ -3,4 +3,4 @@
 
 
 [Home](./../../README.md) 
-| [<< Spring Data JPA](./../tutorials.md) 
+| [<< Spring tutorial list](./../tutorials.md) 
