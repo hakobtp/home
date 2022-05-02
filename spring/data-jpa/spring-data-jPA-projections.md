@@ -8,6 +8,11 @@ Last Updated:   2022-04-29
 - [Overview](#overview)
 - [Project setup](#project-setup)
 - [Create entities](#create-entities)
+  - [Student entity](#student-entity)
+  - [Course entity](#course-entity)
+  - [Create repository](#create-repository)
+    - [Student repository](#student-repository)
+    - [Course repository ](#course-repository)
 
 ---
 
@@ -74,16 +79,88 @@ or read my article [testcontainer introduction](../../test/testcontainer/testcon
 
 ## Create entities
 
+For taking things simple let's create two simple entities
+
 ![student-course_relationship](./assets/spring-jpa-projection/spring-%20jpa-projections.png)
 
-<!-- gradle -->
 
+### Student entity
 
-<!-- To show how it works let's create two entities. -->
+```java
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
-## A entity
+@Entity
+public class Student {
 
-## B entity
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long id;
+
+    private String firstName;
+    private String lastName;
+    private String email;
+
+    @ManyToMany(mappedBy = "students")
+    private List<Course> courses = new ArrayList<>();
+
+    // getter and setter
+
+}    
+
+```
+
+### Course entity
+
+```java
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+public class Course {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long id;
+
+    private String title;
+    private String description;
+    private Integer number;
+    private String author;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "student_course",
+            joinColumns = @JoinColumn(name = "course_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "student_id", referencedColumnName = "id")
+    )
+    private List<Student> students = new ArrayList<>();
+
+    // getter and setter
+
+}  
+```
+
+### Create repository
+
+#### Student repository
+
+```java
+public interface StudentRepository extends JpaRepository<Student, Long> {
+}
+
+```
+
+#### Course repository 
+
+```java
+public interface CourseRepository extends JpaRepository<Course, Long> {
+}
+```
+
 
 [Home](./../../README.md) 
 | [<< Spring Data JPA](./tutorials.md)
