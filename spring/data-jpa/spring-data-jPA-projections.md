@@ -3,7 +3,7 @@
 ```info
 Author :        Ter-Petrosyan Hakob
 Last Updated:   2022-04-29
-````
+```
 
 - [Overview](#overview)
 - [Project setup](#project-setup)
