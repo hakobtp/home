@@ -74,7 +74,7 @@ or read my article [testcontainer introduction](../../test/testcontainer/testcon
 
 ## Create entities
 
-![studen-course_relationship](./assets/spring-jpa-projection/spring-%20jpa-projections.png)
+![student-course_relationship](./assets/spring-jpa-projection/spring-%20jpa-projections.png)
 
 <!-- gradle -->
 
