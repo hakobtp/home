@@ -69,8 +69,8 @@ tasks.named('test') {
 ```
 
 For the integration test, I will use the testcontainer if you want to know much about the testcontainer please visit the 
-[testcontainer's official site](https://www.testcontainers.org/) 
-or read my article [testcontainer introduction](../../test/testcontainer/testcontainer-introduction.md)
+[testcontainer's official site](https://www.testcontainers.org/){:target="\_blank"} 
+or read my article [testcontainer introduction](../../test/testcontainer/testcontainer-introduction.md).
 
 <!-- gradle -->
 
