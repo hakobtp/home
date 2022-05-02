@@ -3,10 +3,76 @@
 ```info
 Author :        Ter-Petrosyan Hakob
 Last Updated:   2022-04-29
+
+- [Overview](#overview)
+- [Project setup](#project-setup)
+
+
+<!-- create entities
+
+write test
+interface projection
+close
+open
+class projection
+dynamic projection -->
+
+
 ````
 
+## Overview
+
 Spring JPA gives us the ability via repository easy work with our data but the repository returned all entity representations, 
-sometimes we don't need all representations, in this case, we can use projections. To show how it works let's create two entities.
+sometimes we don't need all representations, in this case, we can use projections. 
+
+
+## Project setup
+
+For demo purposes let's create a simple project:
+
+```groovy
+plugins {
+  id 'org.springframework.boot' version '2.6.7'
+  id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+  id 'java'
+}
+
+group = 'com.htp'
+version = '0.0.1'
+sourceCompatibility = '17'
+
+repositories {
+  mavenCentral()
+}
+
+ext {
+  set('testcontainersVersion', "1.16.2")
+}
+
+dependencies {
+  implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+  testImplementation 'org.springframework.boot:spring-boot-starter-test'
+  testImplementation 'org.testcontainers:junit-jupiter'
+}
+
+dependencyManagement {
+  imports {
+    mavenBom "org.testcontainers:testcontainers-bom:${testcontainersVersion}"
+  }
+}
+
+tasks.named('test') {
+  useJUnitPlatform()
+}
+```
+
+For the integration test, I will use the test container if you want to know much about the test container please visit the 
+[test container's official site](https://www.testcontainers.org/) or read my article about test contener
+
+<!-- gradle -->
+
+
+<!-- To show how it works let's create two entities. -->
 
 ## A entity
 
