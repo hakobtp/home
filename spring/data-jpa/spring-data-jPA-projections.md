@@ -7,10 +7,11 @@ Last Updated:   2022-04-29
 
 - [Overview](#overview)
 - [Project setup](#project-setup)
+- [Create entities](#create-entities)
 
 ---
 
-<!-- create entities
+<!-- 
 
 write test
 interface projection
@@ -18,8 +19,6 @@ close
 open
 class projection
 dynamic projection -->
-
-
 
 
 ## Overview
@@ -53,6 +52,7 @@ ext {
 
 dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+  runtimeOnly 'org.postgresql:postgresql'
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
   testImplementation 'org.testcontainers:junit-jupiter'
 }
@@ -71,6 +71,10 @@ tasks.named('test') {
 For the integration test, I will use the testcontainer if you want to know much about the testcontainer please visit the 
 [testcontainer's official site](https://www.testcontainers.org/){:target="\_blank"} 
 or read my article [testcontainer introduction](../../test/testcontainer/testcontainer-introduction.md).
+
+## Create entities
+
+![studen-course_relationship](./assets/spring-jpa-projection/spring-%20jpa-projections.png)
 
 <!-- gradle -->
 
