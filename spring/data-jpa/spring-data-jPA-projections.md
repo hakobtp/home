@@ -3,10 +3,12 @@
 ```info
 Author :        Ter-Petrosyan Hakob
 Last Updated:   2022-04-29
+````
 
 - [Overview](#overview)
 - [Project setup](#project-setup)
 
+---
 
 <!-- create entities
 
@@ -66,8 +68,9 @@ tasks.named('test') {
 }
 ```
 
-For the integration test, I will use the test container if you want to know much about the test container please visit the 
-[test container's official site](https://www.testcontainers.org/) or read my article about test contener
+For the integration test, I will use the testcontainer if you want to know much about the testcontainer please visit the 
+[testcontainer's official site](https://www.testcontainers.org/) 
+or read my article [testcontainer introduction](../../test/testcontainer/testcontainer-introduction.md)
 
 <!-- gradle -->
 
