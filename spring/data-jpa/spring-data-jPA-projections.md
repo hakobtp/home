@@ -370,6 +370,40 @@ class CourseRepositoryTest {
 > **NOTE**
 > Spring creates a proxy instance of the projection interface for each entity object, and all calls to the proxy are forwarded to that object.
 
+`unit test StudentRepository`
+
+```java
+@DataJpaTest
+@Sql(scripts = "/insert_data.sql")
+@Sql(scripts = "/clean_up_data.sql", executionPhase = AFTER_TEST_METHOD)
+public class StudentRepositoryTest {
+
+    @Autowired
+    private StudentRepository studentRepository;
+
+    @Test
+    void getByEmailTest() {
+        var studentViewOptional = studentRepository.getByEmail("gurgen@mail.com");
+
+        assertFalse(studentViewOptional.isEmpty());
+
+        var studentView = studentViewOptional.get();
+        assertEquals(studentView.getEmail(), "gurgen@mail.com");
+        assertEquals(studentView.getFirstName(), "Gurgen");
+
+        assertNotNull(studentView.getAddress());
+        assertEquals(studentView.getAddress().getZipCode(), "00001");
+
+        var courses = studentView.getCourses();
+        assertFalse(courses.isEmpty());
+        assertEquals(courses.size(), 1);
+
+        var course = courses.get(0);
+        assertEquals(course.getTitle(), "Java");
+        assertEquals(course.getNumber(), 1);
+    }
+}
+```
 
 ### Open Projection:
 
