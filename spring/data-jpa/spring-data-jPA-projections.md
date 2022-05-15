@@ -373,7 +373,7 @@ class CourseRepositoryTest {
 > **NOTE**
 > Spring creates a proxy instance of the projection interface for each entity object, and all calls to the proxy are forwarded to that object.
 
-`test StudentRepository`
+`test for StudentRepository`
 
 ```java
 @DataJpaTest
@@ -443,7 +443,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 }
 ```
 
-`test getByFirstName method`
+`test for getByFirstName method`
 
 ```java
 
