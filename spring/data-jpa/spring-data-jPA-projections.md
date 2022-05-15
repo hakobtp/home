@@ -11,7 +11,7 @@ Last Updated:   2022-05-15
   - [Student entity](#student-entity)
   - [Course entity](#course-entity)
   - [Address entity](#address-entity)
-- [Create repository](#create-repository)
+- [Create repository](#create-repositories)
   - [Student repository](#student-repository)
   - [Course repository ](#course-repository)
   - [Address repository ](#address-repository)
@@ -168,7 +168,9 @@ public class Address {
     // getter and setter
 ```    
 
-## Create repository
+## Create repositories
+
+Let's create repositories for our entities.
 
 ### Student repository
 
