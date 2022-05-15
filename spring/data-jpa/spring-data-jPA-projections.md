@@ -2,7 +2,7 @@
 
 ```info
 Author :        Ter-Petrosyan Hakob
-Last Updated:   2022-04-29
+Last Updated:   2022-05-15
 ```
 
 - [Overview](#overview)
@@ -10,9 +10,11 @@ Last Updated:   2022-04-29
 - [Create entities](#create-entities)
   - [Student entity](#student-entity)
   - [Course entity](#course-entity)
-  - [Create repository](#create-repository)
-    - [Student repository](#student-repository)
-    - [Course repository ](#course-repository)
+  - [Address entity](#address-entity)
+- [Create repository](#create-repository)
+  - [Student repository](#student-repository)
+  - [Course repository ](#course-repository)
+  - [Address repository ](#address-repository)
 
 ---
 
@@ -79,7 +81,7 @@ or read my article [testcontainer introduction](../../test/testcontainer/testcon
 
 ## Create entities
 
-For taking things simple let's create two simple entities
+To make things simple let's create three simple entities
 
 ![student-course_relationship](./assets/spring-jpa-projection/spring-%20jpa-projections.png)
 
@@ -87,10 +89,6 @@ For taking things simple let's create two simple entities
 ### Student entity
 
 ```java
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
 public class Student {
 
@@ -102,8 +100,11 @@ public class Student {
     private String lastName;
     private String email;
 
-    @ManyToMany(mappedBy = "students")
-    private List<Course> courses = new ArrayList<>();
+    @ManyToMany(mappedBy = "students", fetch = FetchType.EAGER)
+    public List<Course> courses = new ArrayList<>();
+
+    @OneToOne(mappedBy = "student")
+    private Address address;
 
     // getter and setter
 
@@ -114,11 +115,6 @@ public class Student {
 ### Course entity
 
 ```java
-
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
 public class Course {
 
@@ -131,7 +127,10 @@ public class Course {
     private Integer number;
     private String author;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
     @JoinTable(
             name = "student_course",
             joinColumns = @JoinColumn(name = "course_id", referencedColumnName = "id"),
@@ -144,9 +143,34 @@ public class Course {
 }  
 ```
 
-### Create repository
+### Address entity
 
-#### Student repository
+```java
+@Entity
+public class Address {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long id;
+
+    @OneToOne
+    private Student student;
+
+    private String state;
+
+    private String city;
+
+    private String street;
+
+    private String zipCode;
+}
+
+    // getter and setter
+```    
+
+## Create repository
+
+### Student repository
 
 ```java
 public interface StudentRepository extends JpaRepository<Student, Long> {
@@ -154,12 +178,20 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
 ```
 
-#### Course repository 
+### Course repository 
 
 ```java
 public interface CourseRepository extends JpaRepository<Course, Long> {
 }
 ```
+
+### Address repository
+
+```java
+public interface AddressRepository extends JpaRepository<Address, Long> {
+}
+```
+
 
 
 [Home](./../../README.md) 
