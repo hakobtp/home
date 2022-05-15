@@ -324,7 +324,7 @@ DELETE FROM student;
 ```
 
 
-` test for CourseRepository`
+`test for CourseRepository`
 
 ```java
 
