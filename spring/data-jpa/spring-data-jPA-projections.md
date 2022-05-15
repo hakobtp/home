@@ -15,6 +15,11 @@ Last Updated:   2022-05-15
   - [Student repository](#student-repository)
   - [Course repository ](#course-repository)
   - [Address repository ](#address-repository)
+- [Interface Based Projections](#interface-based-projections)  
+  - [Close Projection](#close-projection)
+  - [Open Projection](#open-projection)
+- [Class Based Projections](#class-based-projections)
+- [Dynamic Projections](#dynamic-projections)
 
 ---
 
@@ -194,7 +199,18 @@ public interface AddressRepository extends JpaRepository<Address, Long> {
 }
 ```
 
+## Interface Based Projections
 
+In this type, we create an interface with only getter methods of properties we want from an entity class. 
+This interface will be the return type of query method we write in repository.
+
+### Close Projection
+
+
+### Open Projection:
+
+## Class Based Projections
+## Dynamic Projections
 
 [Home](./../../README.md) 
 | [<< Spring Data JPA](./tutorials.md)
