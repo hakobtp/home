@@ -59,9 +59,6 @@ repositories {
 }
 
 dependencies {
-
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     runtimeOnly 'com.h2database:h2'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -241,9 +238,7 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
 }
 
 ```
-
-Ok let's summarize in the course repository  we have the getByNumber method which should return CourseView  and 
-the getByAuthor which should return CurseAuthorStudentView.
+---
 
 `Student View`
 
@@ -279,6 +274,12 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     Optional<StudentView> getByEmail(String email);
 }
 ```
+
+
+Ok let's summarize in the course repository  we have the getByNumber method which should return CourseView  and 
+the getByAuthor which should return CurseAuthorStudentView.
+
+In the student repository we have getByEmail mehtod which should return StudentView.
 
 Let's write some tests for our repository
 
@@ -319,6 +320,52 @@ DELETE FROM course;
 DELETE FROM student;
 ```
 
+
+`unit test for CourseRepository`
+
+```java
+
+@DataJpaTest
+@Sql(scripts = "/insert_data.sql")
+@Sql(scripts = "/clean_up_data.sql", executionPhase = AFTER_TEST_METHOD)
+class CourseRepositoryTest {
+
+    @Autowired
+    private CourseRepository courseRepository;
+
+    @Test
+    void getByNumberTest() {
+        var courseViewOptional = courseRepository.getByNumber(1);
+
+        assertFalse(courseViewOptional.isEmpty());
+        var courseView = courseViewOptional.get();
+
+        assertEquals(courseView.getNumber(), 1);
+        assertEquals(courseView.getTitle(), "Java");
+        assertEquals(courseView.getAuthor(), "James Gosling");
+    }
+
+    @Test
+    void getByAuthorTest() {
+        var list = courseRepository.getByAuthor("James Gosling");
+
+        assertFalse(list.isEmpty());
+        assertEquals(list.size(), 1);
+
+        var course = list.get(0);
+        assertEquals(course.getNumber(), 1);
+        assertEquals(course.getTitle(), "Java");
+
+        var students = course.getStudents();
+        assertFalse(students.isEmpty());
+        assertEquals(students.size(), 1);
+
+        var student = students.get(0);
+        assertEquals(student.getEmail(), "gurgen@mail.com");
+        assertEquals(student.getFirstName(), "Gurgen");
+    }
+}
+```
 
 
 
