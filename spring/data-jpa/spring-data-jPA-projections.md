@@ -206,6 +206,58 @@ This interface will be the return type of query method we write in repository.
 
 ### Close Projection
 
+In Close Projection, the getter methods of interface match exactly with the getter methods of Entity’s properties. 
+
+Let’s declare a projection interface for the Course and Student Entits as shown below.
+
+`Course view`
+
+```java
+
+public interface CourseView {
+
+    String getTitle();
+
+    Integer getNumber();
+
+    String getAuthor();
+}
+```
+
+```java
+public interface CurseAuthorStudentView {
+
+    String getTitle();
+
+    Integer getNumber();
+
+    List<CourseStudentView> getStudents();
+
+    interface CourseStudentView {
+
+        String getFirstName();
+
+        String getEmail();
+    }
+}
+```
+
+Let's add two methods to our course repository
+
+```java
+public interface CourseRepository extends JpaRepository<Course, Long> {
+
+    Optional<CourseView> getByNumber(Integer number);
+
+    List<CurseAuthorStudentView> getByAuthor(String author);
+}
+
+```
+
+Ok let's summarize in the course repository  we have the getByNumber method which should return CourseView  and 
+the getByAuthor which should return CurseAuthorStudentView.
+
+
 
 ### Open Projection:
 
