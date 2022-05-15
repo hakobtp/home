@@ -367,6 +367,7 @@ class CourseRepositoryTest {
 }
 ```
 
+> **NOTE**
 > Spring creates a proxy instance of the projection interface for each entity object, and all calls to the proxy are forwarded to that object.
 
 
