@@ -45,9 +45,9 @@ For demo purposes let's create a simple project:
 
 ```groovy
 plugins {
-  id 'org.springframework.boot' version '2.6.7'
-  id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-  id 'java'
+    id 'org.springframework.boot' version '2.6.7'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
 }
 
 group = 'com.htp'
@@ -55,34 +55,22 @@ version = '0.0.1'
 sourceCompatibility = '17'
 
 repositories {
-  mavenCentral()
-}
-
-ext {
-  set('testcontainersVersion', "1.16.2")
+    mavenCentral()
 }
 
 dependencies {
-  implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-  runtimeOnly 'org.postgresql:postgresql'
-  testImplementation 'org.springframework.boot:spring-boot-starter-test'
-  testImplementation 'org.testcontainers:junit-jupiter'
-}
 
-dependencyManagement {
-  imports {
-    mavenBom "org.testcontainers:testcontainers-bom:${testcontainersVersion}"
-  }
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    runtimeOnly 'com.h2database:h2'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 tasks.named('test') {
-  useJUnitPlatform()
+    useJUnitPlatform()
 }
 ```
-
-For the integration test, I will use the testcontainer if you want to know much about the testcontainer please visit the 
-[testcontainer's official site](https://www.testcontainers.org/){:target="\_blank"} 
-or read my article [testcontainer introduction](../../test/testcontainer/testcontainer-introduction.md).
 
 ## Create entities
 
@@ -208,7 +196,7 @@ This interface will be the return type of query method we write in repository.
 
 In Close Projection, the getter methods of interface match exactly with the getter methods of Entity’s properties. 
 
-Let’s declare a projection interface for the Course and Student Entits as shown below.
+Let’s declare a projection interface for the Course and Student entities as shown below.
 
 `Course view`
 
@@ -256,6 +244,81 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
 
 Ok let's summarize in the course repository  we have the getByNumber method which should return CourseView  and 
 the getByAuthor which should return CurseAuthorStudentView.
+
+`Student View`
+
+```java
+public interface StudentView {
+
+    String getEmail();
+
+    String getFirstName();
+
+    StudentAddressView getAddress();
+
+    List<StudentCourseView> getCourses();
+
+    interface StudentCourseView {
+        String getTitle();
+
+        Integer getNumber();
+
+    }
+
+    interface StudentAddressView {
+
+        String getZipCode();
+    }
+}
+```
+
+```java
+
+public interface StudentRepository extends JpaRepository<Student, Long> {
+
+    Optional<StudentView> getByEmail(String email);
+}
+```
+
+Let's write some tests for our repository
+
+`test application.properties`
+
+```properties
+jdbc.driverClassName=org.h2.Driver
+jdbc.url=jdbc:h2:mem:myDb;DB_CLOSE_DELAY=-1
+
+hibernate.dialect=org.hibernate.dialect.H2Dialect
+hibernate.show_sql=true
+hibernate.hbm2ddl.auto=create
+
+hibernate.cache.use_second_level_cache=false
+hibernate.cache.use_query_cache=false
+```
+
+`insert_data.sql`
+```sql
+INSERT INTO student (id, email, first_name, last_name)
+VALUES(1, 'gurgen@mail.com', 'Gurgen', 'Aloyan');
+
+INSERT INTO address (id, student_id, state, city, street, zip_code)
+VALUES(1, 1, 'AR', 'Armavir', 'Test', '00001');
+
+INSERT INTO course (id, author, description, number, title)
+VALUES(1, 'James Gosling', 'course description', 1, 'Java');
+
+INSERT INTO student_course (course_id, student_id)
+VALUES(1,1);
+```
+
+`clean_up_data.sql`
+```sql
+DELETE FROM address;
+DELETE FROM student_course;
+DELETE FROM course;
+DELETE FROM student;
+```
+
 
 
 
