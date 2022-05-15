@@ -290,8 +290,11 @@ jdbc.driverClassName=org.h2.Driver
 jdbc.url=jdbc:h2:mem:myDb;DB_CLOSE_DELAY=-1
 
 hibernate.dialect=org.hibernate.dialect.H2Dialect
-hibernate.show_sql=true
 hibernate.hbm2ddl.auto=create
+
+spring.jpa.properties.hibernate.show_sql=true
+spring.jpa.properties.hibernate.use_sql_comments=true
+spring.jpa.properties.hibernate.format_sql=true
 
 hibernate.cache.use_second_level_cache=false
 hibernate.cache.use_query_cache=false
@@ -321,7 +324,7 @@ DELETE FROM student;
 ```
 
 
-`unit test for CourseRepository`
+` test for CourseRepository`
 
 ```java
 
@@ -370,7 +373,7 @@ class CourseRepositoryTest {
 > **NOTE**
 > Spring creates a proxy instance of the projection interface for each entity object, and all calls to the proxy are forwarded to that object.
 
-`unit test StudentRepository`
+`test StudentRepository`
 
 ```java
 @DataJpaTest
@@ -405,7 +408,68 @@ public class StudentRepositoryTest {
 }
 ```
 
-### Open Projection:
+### Open Projection
+
+Open projection enable us to define interface methods with unmatched names and with return values computed at runtime.
+
+Let's create a new view for student
+
+```java
+public interface StudentInfoView {
+
+    @Value("#{target.firstName + ' ' + target.lastName}")
+    String getFullName();
+
+    String getEmail();
+
+
+    AddressView getAddress();
+
+    interface AddressView {
+        @Value("#{target.state + '/' + target.city}")
+        String getFullAddress();
+    }
+}
+```
+
+and add a new method to student repository
+
+```java
+public interface StudentRepository extends JpaRepository<Student, Long> {
+
+    //...
+
+    StudentInfoView getByFirstName(String firstName);
+}
+
+
+`test getByFirstName method`
+
+```java
+
+@DataJpaTest
+@Sql(scripts = "/insert_data.sql")
+@Sql(scripts = "/clean_up_data.sql", executionPhase = AFTER_TEST_METHOD)
+public class StudentRepositoryTest {
+
+    @Autowired
+    private StudentRepository studentRepository;
+
+    //... 
+
+    @Test
+    void getByFirstNameTest() {
+        var studentInfoView = studentRepository.getByFirstName("Gurgen");
+        assertEquals(studentInfoView.getEmail(), "gurgen@mail.com");
+        assertEquals(studentInfoView.getFullName(), "Gurgen Aloyan");
+        assertEquals(studentInfoView.getAddress().getFullAddress(), "AR/Armavir");
+    }
+}
+```
+
+> **NOTE**
+> Open projections have a drawback. Spring Data cannot optimize query execution as it doesn’t know in advance which properties will be used. 
+> Thus, we should only use open projections when closed projections aren’t capable of handling our requirements.
 
 ## Class Based Projections
 ## Dynamic Projections
