@@ -441,7 +441,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
     StudentInfoView getByFirstName(String firstName);
 }
-
+```
 
 `test getByFirstName method`
 
