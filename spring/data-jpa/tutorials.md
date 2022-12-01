@@ -1,5 +1,4 @@
-## [Spring Data JPA Projections](./spring-data-jPA-projections.md)
-
+[Spring Data JPA Projections](./spring-data-jPA-projections.md)
 
 
 [Home](./../../README.md) 

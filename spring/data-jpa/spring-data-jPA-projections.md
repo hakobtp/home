@@ -1,8 +1,9 @@
 # Spring Data JPA projections
 
 ```info
-Author :        Ter-Petrosyan Hakob
-Last Updated:   2022-05-15
+Author      Ter-Petrosyan Hakob
+Created     2022-04-15 
+Updated     2022-05-15
 ```
 
 - [Overview](#overview)
