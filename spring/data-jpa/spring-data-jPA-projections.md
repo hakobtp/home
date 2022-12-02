@@ -597,5 +597,7 @@ public class StudentRepositoryTest {
 }   
 ```   
 
+[github repository](https://github.com/blog-source/spring-data-jpa-projections)
+
 [Home](./../../README.md) 
 | [<< Spring Data JPA](./tutorials.md)
