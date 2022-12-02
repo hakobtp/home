@@ -21,6 +21,7 @@ Updated     2022-12-02
   - [Open Projection](#open-projection)
 - [Class Based Projections](#class-based-projections)
 - [Dynamic Projections](#dynamic-projections)
+- [Conclusion](#conclusion)
 
 ---
 
@@ -595,9 +596,13 @@ public class StudentRepositoryTest {
 
     }
 }   
-```   
+```
 
-[github repository](https://github.com/blog-source/spring-data-jpa-projections)
+## Conclusion
+
+The source code for this article is available [over on GitHub](https://github.com/blog-source/spring-data-jpa-projections).
+
+---
 
 [Home](./../../README.md) 
 | [<< Spring Data JPA](./tutorials.md)
