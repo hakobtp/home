@@ -65,7 +65,7 @@ tasks.named('test') {
 
 To make things simple let's create three simple entities
 
-![student-course_relationship](./assets/spring-jpa-projection/spring-%20jpa-projections.png)
+![student-course_relationship](./assets/spring-jpa-projection/spring-jpa-projection.png)
 
 
 ### Student entity
