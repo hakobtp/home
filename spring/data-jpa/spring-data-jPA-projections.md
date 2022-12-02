@@ -3,7 +3,7 @@
 ```info
 Author      Ter-Petrosyan Hakob
 Created     2022-04-15 
-Updated     2022-05-15
+Updated     2022-12-02
 ```
 
 - [Overview](#overview)
@@ -23,15 +23,6 @@ Updated     2022-05-15
 - [Dynamic Projections](#dynamic-projections)
 
 ---
-
-<!-- 
-
-write test
-interface projection
-close
-open
-class projection
-dynamic projection -->
 
 
 ## Overview
@@ -95,10 +86,9 @@ public class Student {
     public List<Course> courses = new ArrayList<>();
 
     @OneToOne(mappedBy = "student")
-    private Address address;
-
-    // getter and setter
-
+    private Address address;   
+    
+    // getters and setters
 }    
 
 ```
@@ -129,7 +119,7 @@ public class Course {
     )
     private List<Student> students = new ArrayList<>();
 
-    // getter and setter
+    // getters and setters
 
 }  
 ```
@@ -137,6 +127,7 @@ public class Course {
 ### Address entity
 
 ```java
+
 @Entity
 public class Address {
 
@@ -154,16 +145,16 @@ public class Address {
     private String street;
 
     private String zipCode;
-}
 
-    // getter and setter
+    //getters and setters
+}
 ```    
 
 ## Create repositories
 
 Let's create repositories for our entities.
 
-### Student repository
+*Student repository*
 
 ```java
 public interface StudentRepository extends JpaRepository<Student, Long> {
@@ -171,14 +162,14 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
 ```
 
-### Course repository 
+*Course repository*
 
 ```java
 public interface CourseRepository extends JpaRepository<Course, Long> {
 }
 ```
 
-### Address repository
+*Address repository*
 
 ```java
 public interface AddressRepository extends JpaRepository<Address, Long> {
@@ -473,6 +464,65 @@ public class StudentRepositoryTest {
 > Thus, we should only use open projections when closed projections aren’t capable of handling our requirements.
 
 ## Class Based Projections
+
+Instead of using proxies Spring Data creates from projection interfaces, we can define our own projection classes.
+
+- Parameter names of the class constructor must match the properties of the root entity class
+-  Also, define equals and hashCode implementations; they allow for processing projection objects in a collection
+
+let's create AddressDto
+
+
+```java
+public class AddressDto {
+    private String city;
+    private String street;
+
+    public AddressDto(String city, String street) {
+        this.city = city;
+        this.street = street;
+    }
+
+    //getters, setters, equals and hashCode
+}    
+
+```
+
+and add a new method to address repository
+
+```java
+public interface AddressRepository extends JpaRepository<Address, Long> {
+
+    List<AddressDto> findByZipCode(String zipCode);
+}
+```
+
+`test for findByZipCode method`
+
+```java
+@DataJpaTest
+@Sql(scripts = "/insert_data.sql")
+@Sql(scripts = "/clean_up_data.sql", executionPhase = AFTER_TEST_METHOD)
+public class AddressRepositoryTest {
+
+    @Autowired
+    private AddressRepository addressRepository;
+
+    @Test
+    void findByZipCodeTest() {
+        var listOfAddress = addressRepository.findByZipCode("00001");
+
+        assertFalse(listOfAddress.isEmpty());
+        assertEquals(1, listOfAddress.size());
+        var address = listOfAddress.get(0);
+
+        assertEquals("Armavir", address.getCity());
+        assertEquals("Armavir", address.getStreet());
+    }
+}
+```
+
+
 ## Dynamic Projections
 
 [Home](./../../README.md) 
