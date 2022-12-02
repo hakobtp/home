@@ -522,8 +522,80 @@ public class AddressRepositoryTest {
 }
 ```
 
-
 ## Dynamic Projections
+
+For dynamic projections, we should declare method in the repository  with a Class
+
+let's create StudentDto
+
+```java
+public class StudentDto {
+    private Long id;
+    private String firstName;
+    private String email;
+
+     public StudentDto(Long id, String firstName, String email) {
+        this.id = id;
+        this.firstName = firstName;
+        this.email = email;
+    }
+
+    //getters, setters, equals and hashCode
+}     
+```
+
+and add a new method to studet repository
+
+```java
+public interface StudentRepository extends JpaRepository<Student, Long> {
+ 
+    <T> T findByFirstName(String firstName, Class<T> clazz);
+
+    //...
+}
+```
+
+`test for findByFirstName method`
+
+```java
+
+@DataJpaTest
+@Sql(scripts = "/insert_data.sql")
+@Sql(scripts = "/clean_up_data.sql", executionPhase = AFTER_TEST_METHOD)
+public class StudentRepositoryTest {
+
+    //...
+
+    @Test
+    void findByFirstName() {
+        var studentInfoView = studentRepository.findByFirstName("Gurgen", StudentInfoView.class);
+        assertEquals(studentInfoView.getEmail(), "gurgen@mail.com");
+        assertEquals(studentInfoView.getFullName(), "Gurgen Aloyan");
+        assertEquals(studentInfoView.getAddress().getFullAddress(), "AR/Armavir");
+
+        var studentView  = studentRepository.findByFirstName("Gurgen", StudentView.class);
+        assertEquals(studentView.getEmail(), "gurgen@mail.com");
+        assertEquals(studentView.getFirstName(), "Gurgen");
+
+        assertNotNull(studentView.getAddress());
+        assertEquals(studentView.getAddress().getZipCode(), "00001");
+
+        var courses = studentView.getCourses();
+        assertFalse(courses.isEmpty());
+        assertEquals(courses.size(), 1);
+
+        var course = courses.get(0);
+        assertEquals(course.getTitle(), "Java");
+        assertEquals(course.getNumber(), 1);
+
+        var studentDto  = studentRepository.findByFirstName("Gurgen", StudentDto.class);
+        assertEquals(1, studentDto.getId());
+        assertEquals(studentView.getFirstName(), "Gurgen");
+        assertEquals(studentView.getEmail(), "gurgen@mail.com");
+
+    }
+}   
+```   
 
 [Home](./../../README.md) 
 | [<< Spring Data JPA](./tutorials.md)
