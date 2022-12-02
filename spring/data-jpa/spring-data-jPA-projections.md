@@ -600,7 +600,7 @@ public class StudentRepositoryTest {
 
 ## Conclusion
 
-The source code for this article is available [over on GitHub](https://github.com/blog-source/spring-data-jpa-projections).
+The source code for this article is available [over on GitHub](https://github.com/blog-source/spring-data-jpa-projections){:target="_blank" rel="noopener"}.
 
 ---
 
