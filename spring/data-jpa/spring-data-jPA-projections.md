@@ -22,6 +22,7 @@ Updated     2022-12-08
 - [Class Based Projections](#class-based-projections)
 - [Dynamic Projections](#dynamic-projections)
 - [Tuple projection](#tuple-projection)
+- [Map @Query result to dto](#map-query-result-to-dto)
 - [Conclusion](#conclusion)
 
 ---
@@ -602,7 +603,7 @@ public class StudentRepositoryTest {
 ## Tuple projection
 
 Let's create findStudentsEmailAndIdAndCityByZipCode method in AddressRepository and
-map the SQL projection recording a JPA Tuple container
+map the SQL projection recording a JPA Tuple container.
 
 ```java
 public interface AddressRepository extends JpaRepository<Address, Long> {
@@ -616,7 +617,7 @@ public interface AddressRepository extends JpaRepository<Address, Long> {
 
 ```
 
-and as usual writing unit test
+And as usual writing unit test.
 
 ```java
 
@@ -639,6 +640,69 @@ public class AddressRepositoryTest {
     }
 }
 ```
+Together tuple we can use a Map<String, Object>. 
+
+
+## Map @Query result to dto
+
+As you can see in previous we do type casting and is not good and not safe  for type safety, we can use class Dto.
+Let's create StudentInfoDTO
+
+```java
+
+public class StudentInfoDTO {
+    private Long studentId;
+    private String email;
+    private String city;
+
+    public StudentInfoDTO(Long studentId, String email, String city) {
+        this.studentId = studentId;
+        this.email = email;
+        this.city = city;
+    }
+
+    //getters and setters
+
+}    
+```
+
+now let's add findStudentsInfoByZipCode method in StudentRepository
+
+```java
+public interface AddressRepository extends JpaRepository<Address, Long> {
+
+    //...
+
+    @Query("SELECT new com.hakobtp.blog.dto.StudentInfoDto(student.id, a.student.email,  a.city)" +
+            "FROM Address a WHERE a.zipCode = :zipCode")
+    List<StudentInfoDto> findStudentsInfoByZipCode(@Param("zipCode") String zipCode);
+}
+```
+
+And as usual writing unit test.
+
+```java
+
+@DataJpaTest
+@Sql(scripts = "/insert_data.sql")
+@Sql(scripts = "/clean_up_data.sql", executionPhase = AFTER_TEST_METHOD)
+public class AddressRepositoryTest {
+
+    //...
+
+    @Test
+    void findStudentsInfoByZipCode() {
+        var students = addressRepository.findStudentsInfoByZipCode("00001");
+        assertEquals(1, students.size());
+
+        var student = students.get(0);
+        assertEquals(1, student.getStudentId());
+        assertEquals("Armavir", student.getCity());
+        assertEquals("gurgen@mail.com", student.getEmail());
+    }
+}
+```
+
 
 ## Conclusion
 
