@@ -705,6 +705,7 @@ public class AddressRepositoryTest {
 }
 ```
 
+Instead of the StudentInfoDto Class we can use a Record. 
 
 ## Conclusion
 
