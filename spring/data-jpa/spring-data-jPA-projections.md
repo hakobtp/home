@@ -642,7 +642,8 @@ public class AddressRepositoryTest {
 }
 ```
 
-Instead of the Tuple we can use a Map<String, Object> as return type. 
+Instead of the Tuple we can use a Map<String, Object> or Object[] as the return type. 
+when you use the Object[] you should remember the selected order
 
 
 ## Map @Query result to a dto
