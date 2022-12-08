@@ -3,7 +3,7 @@
 ```info
 Author      Ter-Petrosyan Hakob
 Created     2022-04-15 
-Updated     2022-12-02
+Updated     2022-12-08
 ```
 
 - [Overview](#overview)
@@ -21,6 +21,7 @@ Updated     2022-12-02
   - [Open Projection](#open-projection)
 - [Class Based Projections](#class-based-projections)
 - [Dynamic Projections](#dynamic-projections)
+- [Tuple projection](#tuple-projection)
 - [Conclusion](#conclusion)
 
 ---
@@ -596,6 +597,47 @@ public class StudentRepositoryTest {
 
     }
 }   
+```
+
+## Tuple projection
+
+Let's create findStudentsEmailAndIdAndCityByZipCode method in AddressRepository and
+map the SQL projection recording a JPA Tuple container
+
+```java
+public interface AddressRepository extends JpaRepository<Address, Long> {
+
+    //...
+
+    @Query("SELECT a.student.id as studentId, a.student.email as email, a.city as city  " +
+            "FROM Address a WHERE a.zipCode = :zipCode")
+    List<javax.persistence.Tuple> findStudentsEmailAndIdAndCityByZipCode(@Param("zipCode") String zipCode);
+}
+
+```
+
+and as usual writing unit test
+
+```java
+
+@DataJpaTest
+@Sql(scripts = "/insert_data.sql")
+@Sql(scripts = "/clean_up_data.sql", executionPhase = AFTER_TEST_METHOD)
+public class AddressRepositoryTest {
+
+    //...
+
+    @Test
+    void findStudentsEmailAndIdAndCityByZipCode() {
+        var tuples = addressRepository.findStudentsEmailAndIdAndCityByZipCode("00001");
+        assertEquals(1, tuples.size());
+
+        var tuple = tuples.get(0);
+        assertEquals(1, tuple.get("studentId", Long.class));
+        assertEquals("Armavir", tuple.get("city", String.class));
+        assertEquals("gurgen@mail.com", tuple.get("email", String.class));
+    }
+}
 ```
 
 ## Conclusion
