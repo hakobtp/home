@@ -30,8 +30,9 @@ Updated     2022-12-08
 
 ## Overview
 
-Spring JPA gives us the ability via repository easy work with our data but the repository returned all entity representations, 
-sometimes we don't need all representations, in this case, we can use projections. 
+Spring JPA gives us the ability via repository easy work with our data. 
+The repository returns all data in entity representation, sometimes we don't need all data, 
+in this case, we can use projections. 
 
 
 ## Project setup
@@ -181,12 +182,12 @@ public interface AddressRepository extends JpaRepository<Address, Long> {
 
 ## Interface Based Projections
 
-In this type, we create an interface with only getter methods of properties we want from an entity class. 
-This interface will be the return type of query method we write in repository.
+In this case, we create an interface with only getter methods of the properties we want from the entity class. 
+This interface will be the return type of the query method we write in the repository.
 
 ### Close Projection
 
-In Close Projection, the getter methods of interface match exactly with the getter methods of Entity’s properties. 
+In Close Projection, the getter methods of the interface match exactly with the getter methods of the Entity’s properties. 
 
 Let’s declare a projection interface for the Course and Student entities as shown below.
 
@@ -271,10 +272,10 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 ```
 
 
-Ok let's summarize in the course repository  we have the getByNumber method which should return CourseView  and 
-the getByAuthor which should return CurseAuthorStudentView.
+Ok let's summarize in the CourseRepository we have a getByNumber method which should return a CourseView  and 
+a getByAuthor which should return a CurseAuthorStudentView.
 
-In the student repository we have getByEmail mehtod which should return StudentView.
+In the StudentRepository we have a getByEmail mehtod which should return a StudentView.
 
 Let's write some tests for our repository
 
@@ -407,7 +408,7 @@ public class StudentRepositoryTest {
 
 Open projection enable us to define interface methods with unmatched names and with return values computed at runtime.
 
-Let's create a new view for student
+Let's create a new view for Student
 
 ```java
 public interface StudentInfoView {
@@ -427,7 +428,7 @@ public interface StudentInfoView {
 }
 ```
 
-and add a new method to student repository
+and add a new method to the StudentRepository
 
 ```java
 public interface StudentRepository extends JpaRepository<Student, Long> {
@@ -491,7 +492,7 @@ public class AddressDto {
 
 ```
 
-and add a new method to address repository
+and add a new method to the AddressRepository
 
 ```java
 public interface AddressRepository extends JpaRepository<Address, Long> {
@@ -527,9 +528,9 @@ public class AddressRepositoryTest {
 
 ## Dynamic Projections
 
-For dynamic projections, we should declare method in the repository  with a Class
+For dynamic projections, we should declare method in the repository with a argument of type `Class<T>` where T is the return type.
 
-let's create StudentDto
+Let's create StudentDto
 
 ```java
 public class StudentDto {
@@ -602,8 +603,8 @@ public class StudentRepositoryTest {
 
 ## Tuple projection
 
-Let's create findStudentsEmailAndIdAndCityByZipCode method in AddressRepository and
-map the SQL projection recording a JPA Tuple container.
+Let's create findStudentsEmailAndIdAndCityByZipCode method in the AddressRepository and
+map the SQL projection recording to a JPA Tuple container.
 
 ```java
 public interface AddressRepository extends JpaRepository<Address, Long> {
@@ -617,7 +618,7 @@ public interface AddressRepository extends JpaRepository<Address, Long> {
 
 ```
 
-And as usual writing unit test.
+And as usual: writing unit test.
 
 ```java
 
@@ -640,12 +641,13 @@ public class AddressRepositoryTest {
     }
 }
 ```
-Together tuple we can use a Map<String, Object>. 
+
+Instead of the Tuple we can use a Map<String, Object> as return type. 
 
 
-## Map @Query result to dto
+## Map @Query result to a dto
 
-As you can see in previous we do type casting and is not good and not safe  for type safety, we can use class Dto.
+As you can see in the previous, we do type casting and it is not good and not safe, to avoid it we can use a Dto class.
 Let's create StudentInfoDTO
 
 ```java
@@ -666,7 +668,7 @@ public class StudentInfoDTO {
 }    
 ```
 
-now let's add findStudentsInfoByZipCode method in StudentRepository
+now let's add a findStudentsInfoByZipCode method in the StudentRepository
 
 ```java
 public interface AddressRepository extends JpaRepository<Address, Long> {
@@ -679,7 +681,7 @@ public interface AddressRepository extends JpaRepository<Address, Long> {
 }
 ```
 
-And as usual writing unit test.
+And as usual: writing unit test.
 
 ```java
 
